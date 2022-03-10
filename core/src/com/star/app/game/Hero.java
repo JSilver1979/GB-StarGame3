@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.star.app.screen.ScreenManager;
@@ -20,6 +21,24 @@ public class Hero {
     private float fireTimer;
     private int score;
     private int scoreView;
+    private int shieldMax;
+    private int shield;
+    private Circle hitArea;
+    boolean isHit;
+
+    public boolean isHit() {
+        return isHit;
+    }
+
+    public void setHit(boolean hit) {
+        isHit = hit;
+    }
+
+    public Circle getHitArea() {
+        return hitArea;
+    }
+
+    public int getShieldInfo() { return shield; }
 
     public int getScore() {
         return score;
@@ -48,6 +67,14 @@ public class Hero {
         this.velocity = new Vector2(0, 0);
         this.angle = 0.0f;
         this.enginePower = 700.0f;
+        this.shieldMax = 100;
+        this.shield = shieldMax;
+        this.hitArea = new Circle(position.x, position.y, 64.0f);
+        this.isHit = false;
+    }
+
+    public void getDamage(int damageAmount) {
+        shield -= damageAmount;
     }
 
     public void addScore(int amount) {
@@ -109,6 +136,8 @@ public class Hero {
         velocity.scl(stopKoef);
 
         checkBorders();
+        hitArea.setPosition(position);
+        bounce();
     }
 
     public void checkBorders() {
@@ -127,6 +156,14 @@ public class Hero {
         if (position.y > ScreenManager.SCREEN_HEIGHT - 32) {
             position.y = ScreenManager.SCREEN_HEIGHT - 32f;
             velocity.y *= -0.5f;
+        }
+    }
+
+    public void bounce() {
+        if (isHit()) {
+            velocity.x *= -1f;
+            velocity.y *= -1f;
+            isHit = false;
         }
     }
 }
