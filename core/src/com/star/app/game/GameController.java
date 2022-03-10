@@ -44,6 +44,7 @@ public class GameController {
         asteroidController.update(dt);
         hero.update(dt);
         checkCollisions();
+        checkHeroDamage();
     }
 
 
@@ -59,6 +60,17 @@ public class GameController {
                     }
                     break;
                 }
+            }
+        }
+    }
+
+    public void checkHeroDamage() {
+        for (int i = 0; i < asteroidController.getActiveList().size(); i++) {
+            Asteroid a = asteroidController.getActiveList().get(i);
+            if (hero.getHitArea().contains(a.getPosition())) {
+                a.takeDamage(a.getHpMax());
+                hero.getDamage(a.getHpMax());
+                hero.setHit(true);
             }
         }
     }

@@ -37,21 +37,22 @@ public class Assets {
         switch (type) {
             case GAME:
                 assetManager.load("images/game.pack", TextureAtlas.class);
-                createStandardFont(32);
+                createStandardFont(32, Color.WHITE);
+                createStandardFont(16, Color.CYAN);
                 assetManager.finishLoading();
                 textureAtlas = assetManager.get("images/game.pack", TextureAtlas.class);
                 break;
         }
     }
 
-    private void createStandardFont(int size) {
+    private void createStandardFont(int size, Color color) {
         FileHandleResolver resolver = new InternalFileHandleResolver();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         FreetypeFontLoader.FreeTypeFontLoaderParameter fontParameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         fontParameter.fontFileName = "fonts/Roboto-Medium.ttf";
         fontParameter.fontParameters.size = size;
-        fontParameter.fontParameters.color = Color.WHITE;
+        fontParameter.fontParameters.color = color;
         fontParameter.fontParameters.shadowOffsetX = 1;
         fontParameter.fontParameters.shadowOffsetY = 1;
         fontParameter.fontParameters.shadowColor = Color.DARK_GRAY;
